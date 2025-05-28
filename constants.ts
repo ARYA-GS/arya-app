@@ -1,0 +1,1 @@
+export const URL_ARYA_JAVA_API = "https://prevdent-back-java.azurewebsites.net";
