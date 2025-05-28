@@ -4,6 +4,7 @@ interface InputAreaProps {
   placeholder?: string;
   value: string;
   onChangeText: (text: string) => void;
+  borderRadius?: number;
   secureTextEntry?: boolean; 
   width?: number;
   color?: string;
@@ -13,13 +14,14 @@ const InputArea = ({
   placeholder = "",
   value,
   onChangeText,
+  borderRadius = 40,
   secureTextEntry = false, 
   color = "#FFFFFF",
   width = 260,
 }: InputAreaProps) => {
   return (
     <View style={styles.container}>
-      <View style={styles.inputArea}>
+      <View style={[styles.inputArea, { borderRadius }]}>
         <TextInput
           placeholder={placeholder}
           value={value}
