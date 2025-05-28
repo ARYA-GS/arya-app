@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   subTitulo: {
     fontSize: 16,
-    fontWeight: "semibold",
+    fontWeight: "bold",
     color: "#013E",
     textAlign: "center",
     marginTop: 10,
