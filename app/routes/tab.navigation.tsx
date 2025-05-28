@@ -17,10 +17,6 @@ export default function TabNavigator() {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Perfil") {
             iconName = focused ? "person" : "person-outline";
-          } else if (route.name === "Informações") {
-            iconName = focused ? "clipboard" : "clipboard-outline";
-          } else if (route.name === "Novo registro") {
-            iconName = focused ? "add-circle" : "add-circle-outline";
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;

@@ -4,6 +4,7 @@ import { RootStackNavigation } from './root.stack.navigation';
 import LoginScreen from '../pages/login/login.screen';
 import CadastroScreen from '../pages/login/cadastro.screen';
 import { useAuth } from '../components/context/auth.context';
+import WelcomeScreen from '../pages/login/welcome.screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ const AppRoutes = () => {
         <Stack.Screen name="Root" component={RootStackNavigation} />
       ) : (
         <>
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Cadastro" component={CadastroScreen} />
         </>
