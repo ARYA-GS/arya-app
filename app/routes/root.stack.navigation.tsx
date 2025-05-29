@@ -3,12 +3,14 @@ import TabNavigator from "./tab.navigation";
 import LoginScreen from "../pages/login/login.screen";
 import CadastroScreen from "../pages/login/cadastro.screen";
 import WelcomeScreen from "../pages/login/welcome.screen";
+import ProfileScreen from "../pages/profile/profile.screen";
 
 export type RootStackParamList = {
   TabNavigation: { screen: string } | undefined;
   Welcome: undefined;
   Login: undefined;
   Cadastro: undefined;
+  ProfileScreen: undefined;
   Home: undefined;
 };
 
@@ -24,6 +26,7 @@ export function RootStackNavigation() {
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Cadastro" component={CadastroScreen} />
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
     </Stack.Navigator>
   );
 }
