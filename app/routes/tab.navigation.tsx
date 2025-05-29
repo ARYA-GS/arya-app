@@ -9,7 +9,7 @@ const Tab = createBottomTabNavigator();
 export default function TabNavigator() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={({ route }) => ({ 
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap = "home-outline";
 
@@ -21,9 +21,15 @@ export default function TabNavigator() {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "#013EB0",
-        tabBarInactiveTintColor: "gray",
-      })}
+        tabBarStyle: {
+            backgroundColor: '#000',
+            borderTopColor: '#242424', 
+          },
+          tabBarActiveTintColor: '#FFFFFF', 
+          tabBarInactiveTintColor: '#B0B0B0', 
+      })
+    }
+      
     >
       <Tab.Screen
         name="Home"

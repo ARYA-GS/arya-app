@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 interface ButtonStandardProps {
   text: string;
+  textColor?: string;
   color?: string;
   width?: number;
   borderRadius?: number;
@@ -12,6 +13,7 @@ interface ButtonStandardProps {
 const ButtonStandard = ({
   text = "buttonText",
   color = "#013E",
+  textColor = "#fff",
   width = 150,
   borderRadius = 50,
   marginVertical = 20,
@@ -23,7 +25,7 @@ const ButtonStandard = ({
       style={[styles.button, { backgroundColor: color, width, marginVertical, borderRadius }]}
       onPress={onPress}
     >
-      <Text style={styles.text}>{text}</Text>
+      <Text style={[styles.text, { color: textColor }]}>{text}</Text>
     </TouchableOpacity>
   );
 };
@@ -36,7 +38,6 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   text: {
-    color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
   },

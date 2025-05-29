@@ -4,7 +4,6 @@ import ButtonStandard from "../../components/common/button/button.standard";
 import { RootStackParamList } from "../../routes/root.stack.navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 
-
 type WelcomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Welcome"
@@ -15,14 +14,13 @@ interface Props {
 }
 
 const WelcomeScreen = ({ navigation }: Props) => {
-
   const handleLogin = () => {
     navigation.navigate("Login");
-  }
+  };
 
-  const handleCadastro= () => {
+  const handleCadastro = () => {
     navigation.navigate("Cadastro");
-  }
+  };
 
   return (
     <View style={globalStyles.container}>
@@ -39,16 +37,24 @@ const WelcomeScreen = ({ navigation }: Props) => {
         <ButtonStandard
           text="Entrar"
           borderRadius={5}
-          color="#013E"
-           onPress={handleLogin}
+          color="#aaa"
+          onPress={handleLogin}
+          textColor="#fff"
+
         />
-        <ButtonStandard text="Cadastrar" borderRadius={5} color="#A4B494" onPress={handleCadastro}/>
+        <ButtonStandard
+          text="Cadastrar"
+          borderRadius={5}
+          color="#30d158"
+          onPress={handleCadastro}
+          textColor="#000"
+        />
       </View>
 
       <View style={styles.imageAryaContainer}>
         <Image
           style={styles.bottomImage}
-          source={require("../../assets/arya-colorido.png")}
+          source={require("../../assets/arya-colorido-branco.png")}
           resizeMode="contain"
         />
       </View>
@@ -61,7 +67,6 @@ export default WelcomeScreen;
 const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
-    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
@@ -69,7 +74,7 @@ const styles = StyleSheet.create({
   flexContainerButton: {
     flexDirection: "row",
     justifyContent: "space-around",
-    gap: 10,
+    gap: 15,
     marginTop: 120,
   },
   containerTitle: {
@@ -80,12 +85,12 @@ const styles = StyleSheet.create({
   titulo: {
     fontSize: 30,
     fontWeight: "bold",
-    color: "#001133ed",
+    color: "#fff",
   },
   subTitulo: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#013E",
+    color: "#fff",
     textAlign: "center",
     marginTop: 10,
   },
