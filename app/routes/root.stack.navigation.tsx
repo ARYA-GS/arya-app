@@ -7,6 +7,7 @@ import ProfileScreen from "../pages/profile/profile.screen";
 import DroneMapScreen from "../pages/drone-map/drone.map.screen";
 import FormDroneScreen from "../pages/form-drone/form.drone.screen";
 import MyDonationsScreen from "../pages/donations/my.donations.screen";
+import OperacoesScreen from "../pages/operacoes/operacoes.screen";
 
 export type RootStackParamList = {
   TabNavigation: { screen: string } | undefined;
@@ -18,6 +19,7 @@ export type RootStackParamList = {
   Home: undefined;
   FormDroneScreen: undefined;
   MyDonationsScreen: undefined;
+  OperacoesScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -36,6 +38,7 @@ export function RootStackNavigation() {
       <Stack.Screen name="DroneMapScreen" component={DroneMapScreen} />
       <Stack.Screen name="FormDroneScreen" component={FormDroneScreen} />
       <Stack.Screen name="MyDonationsScreen" component={MyDonationsScreen} />
+      <Stack.Screen name="OperacoesScreen" component={OperacoesScreen} />
     </Stack.Navigator>
   );
 }

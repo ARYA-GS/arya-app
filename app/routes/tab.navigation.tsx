@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../pages/home/home";
 import ProfileScreen from "../pages/profile/profile.screen";
 import DroneMapScreen from "../pages/drone-map/drone.map.screen";
+import OperacoesScreen from "../pages/operacoes/operacoes.screen";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +20,8 @@ export default function TabNavigator() {
           } else if (route.name === "Perfil") {
             iconName = focused ? "person" : "person-outline";
           } else if (route.name === "Drone Map") {
+            iconName = focused ? "airplane" : "airplane-outline";
+          } else if (route.name === "Operacoes") {
             iconName = focused ? "airplane" : "airplane-outline";
           }
 
@@ -43,6 +46,12 @@ export default function TabNavigator() {
       <Tab.Screen
         name="Drone Map"
         component={DroneMapScreen}
+        options={{ headerShown: false }}
+      />
+
+       <Tab.Screen
+        name="Operacoes"
+        component={OperacoesScreen}
         options={{ headerShown: false }}
       />
 
