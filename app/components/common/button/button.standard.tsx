@@ -7,6 +7,7 @@ interface ButtonStandardProps {
   width?: number;
   borderRadius?: number;
   marginVertical?: number;
+  alignSelf?: any;
   onPress?: () => void;
 }
 
@@ -17,12 +18,13 @@ const ButtonStandard = ({
   width = 150,
   borderRadius = 50,
   marginVertical = 20,
+  alignSelf = "center",
   onPress,
 }: ButtonStandardProps) => {
 
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: color, width, marginVertical, borderRadius }]}
+      style={[styles.button, { backgroundColor: color, width, marginVertical, borderRadius, alignSelf }]}
       onPress={onPress}
     >
       <Text style={[styles.text, { color: textColor }]}>{text}</Text>
