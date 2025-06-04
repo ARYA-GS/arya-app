@@ -31,6 +31,14 @@ const ProfileScreen = () => {
     }
   };
 
+  const handleFormDrone = async () => {
+    try {
+      navigation.navigate("FormDroneScreen")
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível acessar o formulário de doação de drone.");
+    }
+  };
+
   return (
     <ScrollView
       contentContainerStyle={styles.container}
@@ -83,8 +91,19 @@ const ProfileScreen = () => {
 
       <View style={styles.logoutButton}>
         <ButtonStandard
-          text="Sair da conta"
+          text="Doar um drone"
           color="#30d158"
+          width={370}
+          borderRadius={10}
+          marginVertical={2}
+          onPress={handleFormDrone}
+        />
+      </View>
+
+      <View style={styles.logoutButton}>
+        <ButtonStandard
+          text="Sair da conta"
+          color="#d13530"
           width={370}
           borderRadius={10}
           onPress={handleLogout}
