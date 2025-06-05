@@ -8,6 +8,7 @@ import DroneMapScreen from "../pages/drone-map/drone.map.screen";
 import FormDroneScreen from "../pages/form-drone/form.drone.screen";
 import MyDonationsScreen from "../pages/donations/my.donations.screen";
 import OperacoesScreen from "../pages/operacoes/operacoes.screen";
+import HomeScreen from "../pages/home/home";
 
 export type RootStackParamList = {
   TabNavigation: { screen: string } | undefined;
@@ -31,6 +32,7 @@ export function RootStackNavigation() {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="TabNavigation" component={TabNavigator} />
+      <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Cadastro" component={CadastroScreen} />
