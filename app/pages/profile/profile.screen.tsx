@@ -39,6 +39,14 @@ const ProfileScreen = () => {
     }
   };
 
+  const handleListarOcorrencias = async () => {
+    try {
+      navigation.navigate("ListarOcorrenciasScreen")
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível acessar a tela de listagem de ocorrências.");
+    }
+  };
+
   return (
     <ScrollView
       contentContainerStyle={styles.container}
@@ -68,13 +76,6 @@ const ProfileScreen = () => {
         <Text style={styles.info}>{user?.email}</Text>
       </View>
 
-      <View style={styles.activityBox}>
-        <Text style={styles.label}>Recent Activity</Text>
-        <Text style={styles.activityValue}>37345%</Text>
-        <Text style={styles.syareLabel}>Syare</Text>
-        <Text style={styles.syareValue}>3,50%</Text>
-      </View>
-
       <View style={styles.settingsBox}>
         <Text style={styles.label}>Recent Activity</Text>
 
@@ -97,6 +98,17 @@ const ProfileScreen = () => {
           borderRadius={10}
           marginVertical={2}
           onPress={handleFormDrone}
+        />
+      </View>
+
+      <View style={styles.logoutButton}>
+        <ButtonStandard
+          text="Listar Ocorrências"
+          color="#30d158"
+          width={370}
+          borderRadius={10}
+          marginVertical={5}
+          onPress={handleListarOcorrencias}
         />
       </View>
 
