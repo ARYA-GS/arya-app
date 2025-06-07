@@ -73,12 +73,16 @@ function HomeScreen() {
     }
   };
 
+  
+
   const fetchWeather = async (latitude: number, longitude: number) => {
     try {
-      const data = (await apiController.getOpenMeteo(latitude, longitude)) as WeatherModel;
+      const data = await apiController.getOpenMeteo(latitude, longitude);
+      const weatherData = data as WeatherModel;
+      
       setWeather({
-        temp: data.current_weather.temperature,
-        description: String(data.current_weather.weathercode),
+        temp: weatherData.current_weather.temperature,
+        description: String(weatherData.current_weather.weathercode),
       });
     } catch (error) {
       console.error("Erro ao buscar previsão:", error);
