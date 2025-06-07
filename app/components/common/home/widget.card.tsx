@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   widgetTitle: {
     fontSize: 17,
     fontWeight: "600",
-    color: "#343a40",
+    color: "#9e9e9e",
     marginBottom: 12,
     paddingBottom: 6,
     borderBottomWidth: 1,

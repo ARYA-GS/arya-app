@@ -1,7 +1,9 @@
+import { OcorrenciaInterface } from "../../model/ocorrencia.interface";
+
 function generateMoreDrones(startId: number, baseLat: number, baseLon: number, quantity: number) {
   const drones = [];
-  for(let i = 0; i < quantity; i++) {
-    const latOffset = (Math.random() - 0.5) * 0.05; // ±0.025 graus (~2.7km)
+  for (let i = 0; i < quantity; i++) {
+    const latOffset = (Math.random() - 0.5) * 0.05;
     const lonOffset = (Math.random() - 0.5) * 0.05;
     drones.push({
       id: `drone${startId + i}`,
@@ -21,9 +23,7 @@ const dronesAdditional = [
   ...generateMoreDrones(191, -19.9167, -43.9345, 10),     // Belo Horizonte
 ];
 
-// Agora, juntando tudo em uma lista completa de 200 drones
 export const droneLocations = [
-  // drones 1 a 60 (fixos/aleatórios já listados manualmente acima)
   { id: 'drone1', latitude: -23.550520, longitude: -46.633308 }, // São Paulo
   { id: 'drone2', latitude: -23.538420, longitude: -46.621208 },
   { id: 'drone3', latitude: -23.562620, longitude: -46.645408 },
@@ -84,6 +84,164 @@ export const droneLocations = [
   { id: 'drone58', latitude: -8.048765, longitude: -34.879876 },
   { id: 'drone59', latitude: -8.046543, longitude: -34.876543 },
   { id: 'drone60', latitude: -8.049876, longitude: -34.874321 },
-  // Drones gerados com offsets aleatórios
   ...dronesAdditional,
+];
+
+export const ocorrenciaDataset: OcorrenciaInterface[] = [
+  {
+    tipoOcorrencia: 'Incêndio',
+    nivelSeveridade: 5,
+    dataOcorrencia: '2024-06-10T14:30:00Z',
+    descricao: 'Incêndio em residência no centro.',
+    idUsuario: "1",
+    endereco: {
+      bairro: 'Centro',
+      cidade: 'São Paulo',
+      estado: 'SP',
+      pais: 'Brasil'
+    }
+  },
+  {
+    tipoOcorrencia: 'Alagamento',
+    nivelSeveridade: 3,
+    dataOcorrencia: '2024-06-09T09:15:00Z',
+    descricao: 'Rua alagada após chuva forte.',
+    idUsuario: "2",
+    endereco: {
+      bairro: 'Jardim Paulista',
+      cidade: 'São Paulo',
+      estado: 'SP',
+      pais: 'Brasil'
+    }
+  },
+  {
+    tipoOcorrencia: 'Queda de árvore',
+    nivelSeveridade: 2,
+    dataOcorrencia: '2024-06-08T16:45:00Z',
+    descricao: 'Árvore caiu bloqueando a rua.',
+    idUsuario: "3",
+    endereco: {
+      bairro: 'Moema',
+      cidade: 'São Paulo',
+      estado: 'SP',
+      pais: 'Brasil'
+    }
+  },
+  {
+    tipoOcorrencia: 'Deslizamento',
+    nivelSeveridade: 4,
+    dataOcorrencia: '2024-06-07T11:20:00Z',
+    descricao: 'Deslizamento de terra em encosta.',
+    idUsuario: "4",
+    endereco: {
+      bairro: 'Santa Teresa',
+      cidade: 'Rio de Janeiro',
+      estado: 'RJ',
+      pais: 'Brasil'
+    }
+  },
+  {
+    tipoOcorrencia: 'Acidente de trânsito',
+    nivelSeveridade: 3,
+    dataOcorrencia: '2024-06-06T18:10:00Z',
+    descricao: 'Colisão entre dois veículos.',
+    idUsuario: "5",
+    endereco: {
+      bairro: 'Asa Sul',
+      cidade: 'Brasília',
+      estado: 'DF',
+      pais: 'Brasil'
+    }
+  },
+  {
+    tipoOcorrencia: 'Incêndio florestal',
+    nivelSeveridade: 5,
+    dataOcorrencia: '2024-06-05T13:00:00Z',
+    descricao: 'Fogo em área de mata.',
+    idUsuario: "6",
+    endereco: {
+      bairro: 'Parque das Dunas',
+      cidade: 'Salvador',
+      estado: 'BA',
+      pais: 'Brasil'
+    }
+  },
+  {
+    tipoOcorrencia: 'Alagamento',
+    nivelSeveridade: 4,
+    dataOcorrencia: '2024-06-04T07:45:00Z',
+    descricao: 'Alagamento em avenida principal.',
+    idUsuario: "7",
+    endereco: {
+      bairro: 'Aldeota',
+      cidade: 'Fortaleza',
+      estado: 'CE',
+      pais: 'Brasil'
+    }
+  },
+  {
+    tipoOcorrencia: 'Queda de energia',
+    nivelSeveridade: 2,
+    dataOcorrencia: '2024-06-03T22:30:00Z',
+    descricao: 'Bairro sem energia elétrica.',
+    idUsuario: "8",
+    endereco: {
+      bairro: 'Savassi',
+      cidade: 'Belo Horizonte',
+      estado: 'MG',
+      pais: 'Brasil'
+    }
+  },
+  {
+    tipoOcorrencia: 'Desabamento',
+    nivelSeveridade: 5,
+    dataOcorrencia: '2024-06-02T15:00:00Z',
+    descricao: 'Prédio desabou após fortes chuvas.',
+    idUsuario: "9",
+    endereco: {
+      bairro: 'Centro',
+      cidade: 'Curitiba',
+      estado: 'PR',
+      pais: 'Brasil'
+    }
+  },
+  {
+    tipoOcorrencia: 'Incêndio industrial',
+    nivelSeveridade: 4,
+    dataOcorrencia: '2024-06-01T10:20:00Z',
+    descricao: 'Incêndio em fábrica.',
+    idUsuario: "10",
+    endereco: {
+      bairro: 'Navegantes',
+      cidade: 'Porto Alegre',
+      estado: 'RS',
+      pais: 'Brasil'
+    }
+  },
+  {
+    tipoOcorrencia: 'Deslizamento',
+    nivelSeveridade: 3,
+    dataOcorrencia: '2024-05-31T08:40:00Z',
+    descricao: 'Deslizamento em área residencial.',
+    idUsuario: "11",
+    endereco: {
+      bairro: 'Adrianópolis',
+      cidade: 'Manaus',
+      estado: 'AM',
+      pais: 'Brasil'
+    }
+  },
+  {
+    tipoOcorrencia: 'Alagamento',
+    nivelSeveridade: 2,
+    dataOcorrencia: '2024-05-30T19:55:00Z',
+    descricao: 'Rua alagada após chuva intensa.',
+    idUsuario: "12",
+    endereco: {
+      bairro: 'Boa Viagem',
+      cidade: 'Recife',
+      estado: 'PE',
+      pais: 'Brasil'
+    }
+  }
 ];

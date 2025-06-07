@@ -1,9 +1,12 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
-import { UserInterface } from '../../model/user.interface';
-import { JwtInterface } from '../../model/jwt.interface';
+// src/contexts/AuthContext.tsx
+
+import { createContext, useContext, useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { UserInterface } from "../../model/user.interface";
+import { JwtInterface } from "../../model/jwt.interface";
+import { URL_ARYA_LOCAL_API } from "../../../constants";
 
 interface AuthContextType {
   user: UserInterface | null;
@@ -12,10 +15,8 @@ interface AuthContextType {
   register: (
     name: string,
     email: string,
-    cpf: string,
     birthDate: string,
     password: string,
-    role: string
   ) => Promise<void>;
   loading: boolean;
 }
@@ -29,13 +30,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const loadUserData = async () => {
       try {
-        const storedUser = await AsyncStorage.getItem('user');
+        const storedUser = await AsyncStorage.getItem("user");
         if (storedUser) {
           const parsedUser: UserInterface = JSON.parse(storedUser);
           setUser(parsedUser);
         }
       } catch (error) {
-        console.error('[Auth] Erro ao carregar dados do usuário:', error);
+        console.error("[Auth] Erro ao carregar dados do usuário:", error);
       } finally {
         setLoading(false);
       }
@@ -45,58 +46,64 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      console.log('Tentando fazer login com:', email, password);
-      const response = await axios.post('https://prevdent-back-java.azurewebsites.net/paciente/login', {
+      console.log("Tentando fazer login com:", email);
+      const url = `${URL_ARYA_LOCAL_API}/auth/login`;
+      const response = await axios.post(url, {
         email: email,
         senha: password,
       });
-    
-      const data = response.data as { token: string };
-      const jwt = data.token;
+
+      const jwt: string = String(response.data);
+      
+      if (!jwt) {
+        throw new Error("Token não recebido do servidor.");
+      }
+
+      console.log("Token recebido com sucesso.");
+
       const jwtDecoded: JwtInterface = jwtDecode(jwt);
+      console.log("Token decodificado:", jwtDecoded);
 
       const userData: UserInterface = {
-          token: jwt,
-          email: jwtDecoded.sub,
-          nome: jwtDecoded.nome,
-          cpf: jwtDecoded.cpf,
-          data_nascimento: jwtDecoded.data_nascimento,
-    };
+        id: jwtDecoded.id,
+        token: jwt,
+        email: jwtDecoded.sub,
+        nome: jwtDecoded.nome,
+        cpf: jwtDecoded.cpf,
+        data_nascimento: jwtDecoded.data_nascimento, 
+      };
 
-      await AsyncStorage.setItem('user', JSON.stringify(userData));
-      console.log('Dados do usuário armazenados:', JSON.stringify(userData));
+      await AsyncStorage.setItem("user", JSON.stringify(userData));
+      console.log("Dados do usuário armazenados:", JSON.stringify(userData));
       setUser(userData);
+
     } catch (error) {
-      console.error('[Auth - login()] Login falhou', error);
+      console.error("[Auth - login()] Login falhou:", error);
       throw error;
     }
   };
 
   const logout = async () => {
-    await AsyncStorage.removeItem('user');
+    await AsyncStorage.removeItem("user");
     setUser(null);
-    console.log('[Auth logout()] Usuário deslogado');
+    console.log("[Auth logout()] Usuário deslogado");
   };
 
   const register = async (
     name: string,
     email: string,
-    cpf: string,
-    birthDate: string,
     password: string,
-    role: string
+    birthDate: string,
   ) => {
     try {
-      await axios.post('https://prevdent-back-java.azurewebsites.net/paciente/cadastrar', {
+      await axios.post(`${URL_ARYA_LOCAL_API}/usuarios`, {
         nome: name,
         email: email,
-        cpf: cpf,
         data_nascimento: birthDate,
         senha: password,
-        role: role,
       });
     } catch (error) {
-      console.error('[Auth - cadastro()] Cadastro falhou', error);
+      console.error("[Auth - cadastro()] Cadastro falhou", error);
       throw error;
     }
   };
@@ -111,7 +118,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('[Auth] useAuth must be used within an AuthProvider');
+    throw new Error("[Auth] useAuth must be used within an AuthProvider");
   }
   return context;
 };

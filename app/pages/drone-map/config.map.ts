@@ -38,3 +38,45 @@ export const minimalMapStyle = [
         stylers: [{ color: '#cfd8dc' }],
     },
 ];
+
+
+
+
+export const darkMapStyle = [
+    {
+        elementType: 'geometry',
+        stylers: [{ color: '#212121' }],
+    },
+    {
+        elementType: 'labels.text.fill',
+        stylers: [{ color: '#b0b0b0' }],
+    },
+    {
+        elementType: 'labels.text.stroke',
+        stylers: [{ color: '#1a1a1a' }],
+    },
+    {
+        featureType: 'administrative',
+        elementType: 'geometry.stroke',
+        stylers: [{ color: '#444444' }],
+    },
+    {
+        featureType: 'poi',
+        stylers: [{ visibility: 'off' }],
+    },
+    {
+        featureType: 'road',
+        stylers: [
+            { visibility: 'simplified' },
+            { color: '#383838' },
+        ],
+    },
+    {
+        featureType: 'transit',
+        stylers: [{ visibility: 'off' }],
+    },
+    {
+        featureType: 'water',
+        stylers: [{ color: '#232f34' }],
+    },
+];
