@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import HubController from "../../components/api/hubs.controller";
 import { Hub } from "../../model/hub.interface";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { URL_ARYA_LOCAL_API } from "../../../constants";
 
 
 interface DroneDonationFormData {
@@ -49,7 +50,7 @@ export default function DroneDonationScreen() {
         funcoes: data.funcoes,
       };
 
-      const response = await fetch("http://10.0.2.2:8080/drones", {
+      const response = await fetch(`${URL_ARYA_LOCAL_API}/drones`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

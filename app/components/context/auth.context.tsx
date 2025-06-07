@@ -6,7 +6,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { UserInterface } from "../../model/user.interface";
 import { JwtInterface } from "../../model/jwt.interface";
-import { URL_ARYA_JAVA_API } from "../../../constants";
+import { URL_ARYA_JAVA_API, URL_ARYA_LOCAL_API } from "../../../constants";
 
 interface AuthContextType {
   user: UserInterface | null;
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string) => {
     try {
       console.log("Tentando fazer login com:", email);
-      const url = "http://10.0.2.2:8080/auth/login";
+      const url = `${URL_ARYA_LOCAL_API}/auth/login`;
       const response = await axios.post(url, {
         email: email,
         senha: password,
@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     birthDate: string,
   ) => {
     try {
-      await axios.post(`http://10.0.2.2:8080/usuarios`, {
+      await axios.post(`${URL_ARYA_LOCAL_API}/usuarios`, {
         nome: name,
         email: email,
         data_nascimento: birthDate,

@@ -13,6 +13,7 @@ import { droneLocations } from "./lista.drones";
 import OcorrenciaModal from "../../components/common/modal/ocorrencia.modal";
 import DetalhesOcorrenciaModal from "../../components/common/modal/details.ocorrencia.modal";
 import { useAuth } from "../../components/context/auth.context";
+import { URL_ARYA_LOCAL_API } from "../../../constants";
 
 // Interfaces e Tipos
 interface DroneLocation {
@@ -79,7 +80,7 @@ const DroneMapScreen = () => {
         }
       };
 
-      const response = await axios.post('http://10.0.2.2:8080/ocorrencias', payload);
+      const response = await axios.post(`${URL_ARYA_LOCAL_API}/ocorrencias`, payload);
 
       if (response.status === 200 || response.status === 201) {
         const newMarker: DroneLocation = {
