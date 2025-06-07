@@ -53,3 +53,48 @@ export const highDangerLocationsData = [
   { id: 'loc2', name: 'Ponte Caída - Rio Seco', dangerType: 'Isolamento Comunitário', dangerIcon: 'bridge', aryaStatus: 'Entrega de suprimentos (1 drone)', criticality: 'orange' },
   { id: 'loc3', name: 'Parque Estadual Serra Verde', dangerType: 'Incêndio Florestal (Pequeno)', dangerIcon: 'fire-truck', aryaStatus: 'Monitoramento aéreo (1 drone)', criticality: 'yellow' },
 ];
+
+
+export const lightTheme = {
+  background: "#eef0f2",
+  card: "#ffffff",
+  text: "#212529",
+  subText: "#495057",
+  border: "#dee2e6",
+  accent: "#007bff",
+  sectionTitle: "#212529",
+  widgetText: "#495057",
+  widgetTextBold: "#212529",
+  widgetTextSmall: "#6c757d",
+  widgetSubTitle: "#343a40",
+  weatherLocation: "#007bff",
+  weatherTemp: "#343a40",
+  weatherDetails: "#495057",
+  weatherAlert: "#17a2b8",
+  droneOverlay: "rgba(0, 0, 0, 0.65)",
+  quickAccessButtonShadow: "#000",
+  quickAccessButtonText: "#fff",
+  profileBorder: "#007bff",
+};
+
+export const darkTheme = {
+  background: "#181a1b",
+  card: "#23272b",
+  text: "#f8f9fa",
+  subText: "#adb5bd",
+  border: "#343a40",
+  accent: "#4dabf7",
+  sectionTitle: "#f8f9fa",
+  widgetText: "#adb5bd",
+  widgetTextBold: "#f8f9fa",
+  widgetTextSmall: "#868e96",
+  widgetSubTitle: "#dee2e6",
+  weatherLocation: "#4dabf7",
+  weatherTemp: "#dee2e6",
+  weatherDetails: "#adb5bd",
+  weatherAlert: "#63e6be",
+  droneOverlay: "rgba(0,0,0,0.85)",
+  quickAccessButtonShadow: "#000",
+  quickAccessButtonText: "#fff",
+  profileBorder: "#4dabf7",
+};
