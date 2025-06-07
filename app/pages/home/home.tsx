@@ -130,7 +130,6 @@ function HomeScreen() {
         />
       }
     >
-      {" "}
       <View style={styles.header}>
         <View>
           <Text style={styles.greeting}>Olá,</Text>
@@ -168,7 +167,9 @@ function HomeScreen() {
           )}
         </View>
       </View>
+
       <Text style={styles.hubTitle}>Conheça nossos Hubs: </Text>
+
       {hubs
         .filter((hub) => hub.status !== "Inativo")
         .map((hub) => (
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#111111",
-    paddingTop: 70,
+    paddingTop: 80,
     paddingHorizontal: 20,
   },
   header: {
