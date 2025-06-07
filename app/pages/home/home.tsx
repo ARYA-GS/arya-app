@@ -22,14 +22,13 @@ import * as Location from "expo-location";
 import { TabRoutes } from "../../model/tab.routes.enum";
 
 function HomeScreen() {
-  const [weather, setWeather] = useState<{
-    temp: number | null;
-    description: string;
-  }>({ temp: null, description: "" });
-  const [location, setLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
+  const [weather, setWeather] = useState<{ temp: number | null; description: string }>({
+    temp: null,
+    description: "",
+  });
+  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(
+    null
+  );
   const [hubs, setHubs] = useState<Hub[]>([]);
   const [drones, setDrones] = useState<DroneInterface[]>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -76,10 +75,7 @@ function HomeScreen() {
 
   const fetchWeather = async (latitude: number, longitude: number) => {
     try {
-      const data = (await apiController.getOpenMeteo(
-        latitude,
-        longitude
-      )) as WeatherModel;
+      const data = (await apiController.getOpenMeteo(latitude, longitude)) as WeatherModel;
       setWeather({
         temp: data.current_weather.temperature,
         description: String(data.current_weather.weathercode),
@@ -106,12 +102,17 @@ function HomeScreen() {
       console.error("Erro ao buscar drones:", error);
     }
   };
+
   const handleProfile = () => {
     navigation.navigate("TabNavigation", { screen: TabRoutes.Perfil });
   };
 
+  const handleHubPress = (hub: Hub) => {
+    setHubs([hub]);
+    navigation.navigate("HubsDetailsScreen", { hub });
+  };
+
   return (
-    // <View style={styles.container}>
     <ScrollView
       contentContainerStyle={styles.container}
       refreshControl={
@@ -172,7 +173,7 @@ function HomeScreen() {
             key={hub.idHub}
             title={hub.nome}
             bairro={hub.endereco.bairro}
-            onPress={() => {}}
+            onPress={() => handleHubPress(hub)}
           />
         ))}
     </ScrollView>
@@ -249,19 +250,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 12,
     color: "#fff",
-  },
-  hubButton: {
-    flexDirection: "row",
-    backgroundColor: "#f8f8f8",
-    borderRadius: 12,
-    padding: 14,
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  hubText: {
-    fontSize: 15,
-    fontWeight: "500",
   },
 });
 

@@ -10,6 +10,7 @@ import MyDonationsScreen from "../pages/donations/my.donations.screen";
 import OperacoesScreen from "../pages/operacoes/operacoes.screen";
 import HomeScreen from "../pages/home/home";
 import HubsDetailsScreen from "../pages/hubs/hubs.details.screens";
+import { Hub } from "../model/hub.interface";
 
 export type RootStackParamList = {
   TabNavigation: { screen: string } | undefined;
@@ -22,7 +23,7 @@ export type RootStackParamList = {
   FormDroneScreen: undefined;
   MyDonationsScreen: undefined;
   OperacoesScreen: undefined;
-  HubsDetailsScreen: undefined;
+  HubsDetailsScreen: { hub: Hub };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
