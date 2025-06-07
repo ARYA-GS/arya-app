@@ -1,14 +1,12 @@
 import { URL_ARYA_LOCAL_API } from "../../../constants";
+import axios from "axios";
 
-export default class DroneController{
+export default class DroneController {
     async getDrones() {
         try {
-            const response = await fetch(`${URL_ARYA_LOCAL_API}/drones`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return await response.json();
-        } catch (error) {
+            const response = await axios.get(`${URL_ARYA_LOCAL_API}/drones`);
+            return response.data;
+        } catch (error: any) {
             console.error("[DroneController - getDrones] Erro ao buscar drones:", error);
             throw error;
         }
@@ -16,18 +14,13 @@ export default class DroneController{
 
     async cadastrarDrone(droneData: any) {
         try {
-            const response = await fetch(`${URL_ARYA_LOCAL_API}/drones`, {
-                method: 'POST',
+            const response = await axios.post(`${URL_ARYA_LOCAL_API}/drones`, droneData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(droneData),
             });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return await response.json();
-        } catch (error) {
+            return response.data;
+        } catch (error: any) {
             console.error("[DroneController - cadastrarDrone] Erro ao cadastrar drone:", error);
             throw error;
         }

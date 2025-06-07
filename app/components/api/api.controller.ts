@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default class ApiController {
     async getOpenMeteo(latitude: number, longitude: number) {
         try {
