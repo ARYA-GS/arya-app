@@ -22,7 +22,7 @@ export default function TabNavigator() {
           } else if (route.name === "Drone Map") {
             iconName = focused ? "airplane" : "airplane-outline";
           } else if (route.name === "Operacoes") {
-            iconName = focused ? "airplane" : "airplane-outline";
+            iconName = focused ? "settings" : "settings-outline";
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
