@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { Hub } from '../../model/hub.interface'; 
 import { RootStackParamList } from '../../routes/root.stack.navigation'; 
 import BackArrow from '../../components/common/back.arrow.component';
 

@@ -6,9 +6,7 @@ import BackArrow from "../../components/common/back.arrow.component";
 import { useNavigation } from "@react-navigation/native";
 import HubController from "../../components/api/hubs.controller";
 import { Hub } from "../../model/hub.interface";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { URL_ARYA_LOCAL_API } from "../../../constants";
-
 
 interface DroneDonationFormData {
   tipo: string;
@@ -50,19 +48,19 @@ export default function DroneDonationScreen() {
         funcoes: data.funcoes,
       };
 
-      const response = await axios.post(`${URL_ARYA_LOCAL_API}/drones`, payload);
+      const response = await axios.post(
+        `${URL_ARYA_LOCAL_API}/drones`,
+        payload
+      );
 
-      if (response.status < 200 || response.status >= 300) throw new Error("Erro ao cadastrar drone");
-      
+      if (response.status < 200 || response.status >= 300)
+        throw new Error("Erro ao cadastrar drone");
+
       console.log("Drone cadastrado com sucesso:", response.data);
       reset();
     } catch (error) {
       console.error("Erro ao cadastrar drone:", error);
     }
-  };
-
-  const handleDonations = () => {
-    navigation.navigate("MyDonationsScreen");
   };
 
   return (
@@ -150,7 +148,6 @@ export default function DroneDonationScreen() {
           <Text style={styles.error}>{errors.cargaKg.message}</Text>
         )}
 
-        {/* Dropdown de Hub */}
         <Controller
           control={control}
           name="idHub"
@@ -190,7 +187,6 @@ export default function DroneDonationScreen() {
           <Text style={styles.error}>{errors.idHub.message}</Text>
         )}
 
-        {/* Funções */}
         <Controller
           control={control}
           name="funcoes"

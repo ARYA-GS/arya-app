@@ -22,13 +22,17 @@ import * as Location from "expo-location";
 import { TabRoutes } from "../../model/tab.routes.enum";
 
 function HomeScreen() {
-  const [weather, setWeather] = useState<{ temp: number | null; description: string }>({
+  const [weather, setWeather] = useState<{
+    temp: number | null;
+    description: string;
+  }>({
     temp: null,
     description: "",
   });
-  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(
-    null
-  );
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
   const [hubs, setHubs] = useState<Hub[]>([]);
   const [drones, setDrones] = useState<DroneInterface[]>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -73,13 +77,11 @@ function HomeScreen() {
     }
   };
 
-  
-
   const fetchWeather = async (latitude: number, longitude: number) => {
     try {
       const data = await apiController.getOpenMeteo(latitude, longitude);
       const weatherData = data as WeatherModel;
-      
+
       setWeather({
         temp: weatherData.current_weather.temperature,
         description: String(weatherData.current_weather.weathercode),
@@ -128,7 +130,7 @@ function HomeScreen() {
         />
       }
     >
-      {/* Header */}
+      {" "}
       <View style={styles.header}>
         <View>
           <Text style={styles.greeting}>Olá,</Text>
@@ -142,14 +144,12 @@ function HomeScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Drone Hero */}
       <Image
         source={require("../../assets/drone-2.png")}
         style={styles.heroImage}
         resizeMode="cover"
       />
 
-      {/* Data cards */}
       <View style={styles.dataRow}>
         <View style={styles.chartCard}>
           <Text style={styles.cardTitle}>Atividade</Text>
@@ -168,7 +168,6 @@ function HomeScreen() {
           )}
         </View>
       </View>
-
       <Text style={styles.hubTitle}>Conheça nossos Hubs: </Text>
       {hubs
         .filter((hub) => hub.status !== "Inativo")

@@ -11,7 +11,6 @@ import OcorrenciaModal from "../../components/common/modal/ocorrencia.modal";
 import DetalhesOcorrenciaModal from "../../components/common/ocorrencias/details.ocorrencia.modal";
 import { useAuth } from "../../components/context/auth.context";
 import { URL_ARYA_LOCAL_API } from "../../../constants";
-import { OcorrenciaInterface } from "../../model/ocorrencia.interface";
 
 interface DroneLocation {
   id: string | number;
@@ -45,7 +44,6 @@ const DroneMapScreen = () => {
     setDetalhesModalVisible(true);
   };
 
-  // 2. FUNÇÃO ATUALIZADA PARA USAR AXIOS
   const handleConfirmarOcorrencia = async (descricao: string) => {
     setIsSubmitting(true);
 

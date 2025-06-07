@@ -6,7 +6,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { UserInterface } from "../../model/user.interface";
 import { JwtInterface } from "../../model/jwt.interface";
-import { URL_ARYA_JAVA_API, URL_ARYA_LOCAL_API } from "../../../constants";
+import { URL_ARYA_LOCAL_API } from "../../../constants";
 
 interface AuthContextType {
   user: UserInterface | null;
@@ -78,8 +78,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(userData);
 
     } catch (error) {
-      // --- ALTERAÇÃO APLICADA AQUI ---
-      // Tratamento de erro genérico, sem a verificação isAxiosError.
       console.error("[Auth - login()] Login falhou:", error);
       throw error;
     }

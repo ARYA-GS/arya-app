@@ -1,18 +1,16 @@
-// src/components/common/ocorrencias/ocorrencia.list.item.tsx
-
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../routes/root.stack.navigation'; // <-- AJUSTE O CAMINHO
-import { OcorrenciaInterface } from '../../../model/ocorrencia.interface'; // <-- AJUSTE O CAMINHO
+import { RootStackParamList } from '../../../routes/root.stack.navigation'; 
+import { OcorrenciaInterface } from '../../../model/ocorrencia.interface'; 
 
 interface OcorrenciaListItemProps {
   item: OcorrenciaInterface;
 }
 
-// Helper para renderizar uma linha de detalhe dentro do card
+
 const DetailRow = ({ label, value }: { label: string; value: string | number }) => (
   <View style={styles.row}>
     <Text style={styles.label}>{label}:</Text>
@@ -20,7 +18,7 @@ const DetailRow = ({ label, value }: { label: string; value: string | number }) 
   </View>
 );
 
-// Tipando o hook useNavigation
+
 type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
 
 const OcorrenciaListItem: React.FC<OcorrenciaListItemProps> = ({ item }) => {
@@ -116,7 +114,7 @@ const styles = StyleSheet.create({
     padding: 10,
     zIndex: 1,
   },
-  // Estilos para o Modal de Ação
+  
   modalOverlay: {
     flex: 1,
     justifyContent: 'center',

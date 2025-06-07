@@ -1,21 +1,14 @@
-// src/components/OcorrenciaModal.tsx
-
-import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform, Pressable } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-// As props continuam as mesmas, mas o componente não vai mais se gerenciar com <Modal>
 interface OcorrenciaModalProps {
   onClose: () => void;
   onSelectOcorrencia: (tipo: 'Incêndio' | 'Enchente' | 'Ventania') => void;
 }
 
 const OcorrenciaModal: React.FC<OcorrenciaModalProps> = ({ onClose, onSelectOcorrencia }) => {
-  // A raiz do componente agora é um Pressable que cobre a tela,
-  // permitindo fechar o modal ao clicar no fundo escuro.
   return (
     <Pressable style={styles.overlay} onPress={onClose}>
-      {/* Usamos Pressable aqui também para evitar que o clique no modal feche ele */}
       <Pressable> 
         <View style={styles.container}>
           <TouchableOpacity style={styles.modalCloseButton} onPress={onClose}>
@@ -47,18 +40,16 @@ const OcorrenciaModal: React.FC<OcorrenciaModalProps> = ({ onClose, onSelectOcor
 };
 
 const styles = StyleSheet.create({
-  // O overlay agora é uma View com posicionamento absoluto
   overlay: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
-    zIndex: 100, // Garante que ele fique por cima de tudo
+    zIndex: 100,
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
-  // O container do modal em si (o painel branco)
   container: {
     backgroundColor: "white",
     borderTopLeftRadius: 20,

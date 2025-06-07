@@ -1,4 +1,4 @@
-// src/components/OcorrenciaCard.tsx
+
 
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
@@ -8,26 +8,20 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../routes/root.stack.navigation';
 import { OcorrenciaInterface } from '../../../model/ocorrencia.interface';
 
-
-// Interface para os dados de uma ocorrência
-// (Pode ser movida para um arquivo de tipos separado, se preferir)
-
-
 interface OcorrenciaCardProps {
   item: OcorrenciaInterface ;
 }
 
-// Tipando o hook useNavigation para ter autocomplete e segurança de tipo
 type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
 
 const OcorrenciaCard: React.FC<OcorrenciaCardProps> = ({ item }) => {
-  // Estado para controlar a visibilidade do modal de ação
+  
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation<NavigationProps>();
 
-  // Função para navegar para a tela de detalhes
+  
   const handleVerDetalhes = () => {
-    setModalVisible(false); // Fecha o modal antes de navegar
+    setModalVisible(false); 
     navigation.navigate('OcorrenciasDetailsScreen', { 
       ocorrencia: { 
         ...item, 
@@ -37,7 +31,7 @@ const OcorrenciaCard: React.FC<OcorrenciaCardProps> = ({ item }) => {
     });
   };
 
-  // Helper para obter o ícone e a cor com base no tipo de ocorrência
+  
   const getOcorrenciaDetails = (tipoOcorrencia: string) => {
     switch (tipoOcorrencia.toLowerCase()) {
       case 'incêndio':
@@ -77,12 +71,10 @@ const OcorrenciaCard: React.FC<OcorrenciaCardProps> = ({ item }) => {
         </View>
       </View>
 
-      {/* --- BOTÃO DE OPÇÕES (3 PONTOS) --- */}
       <TouchableOpacity style={styles.moreButton} onPress={() => setModalVisible(true)}>
         <Ionicons name="ellipsis-vertical" size={24} color="#a0a0a0" />
       </TouchableOpacity>
 
-      {/* --- MODAL DE AÇÃO --- */}
       <Modal
         animationType="fade"
         transparent={true}
@@ -113,7 +105,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 15,
     paddingLeft: 15,
-    paddingRight: 40, // Espaço para o botão de opções
+    paddingRight: 40, 
     marginVertical: 8,
     marginHorizontal: 16,
     flexDirection: 'row',
@@ -162,7 +154,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 5,
     right: 5,
-    padding: 10, // Aumenta a área de toque
+    padding: 10, 
     zIndex: 1,
   },
   modalOverlay: {
@@ -197,7 +189,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#555',
   },
   modalButtonText: {
-    color: '#4dabf7', // Cor azul para ação principal
+    color: '#4dabf7', 
     fontSize: 17,
     textAlign: 'center',
     fontWeight: 'bold'

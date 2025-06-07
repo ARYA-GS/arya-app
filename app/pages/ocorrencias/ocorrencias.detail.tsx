@@ -108,7 +108,6 @@ const OcorrenciasDetailsScreen = () => {
         </View>
       </ScrollView>
 
-      {/* 2. USE O COMPONENTE REUTILIZÁVEL AQUI */}
       <ConfirmationModal
         visible={modalVisible}
         title="Confirmar Exclusão"
