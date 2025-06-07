@@ -1,4 +1,5 @@
 export interface UserInterface {
+  id: string | number;
   token: string;
   email: string;
   nome: string;
