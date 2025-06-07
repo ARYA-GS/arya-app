@@ -1,31 +1,118 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
+// src/screens/DroneMapScreen.tsx
+
+import React, { use, useState } from "react";
+import { View, StyleSheet, Text, Image, TouchableOpacity, Alert } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
+import * as Location from 'expo-location';
+import axios from 'axios'; // <-- 1. Importe o Axios
+
+// Seus outros imports
 import { minimalMapStyle, darkMapStyle } from "./config.map";
-import { droneLocations, droneLocations2 } from "./lista.drones";
-import { Ionicons } from "@expo/vector-icons";
+import { droneLocations } from "./lista.drones";
+import OcorrenciaModal from "../../components/common/modal/ocorrencia.modal";
+import DetalhesOcorrenciaModal from "../../components/common/modal/details.ocorrencia.modal";
+import { useAuth } from "../../components/context/auth.context";
+
+// Interfaces e Tipos
+interface DroneLocation {
+  id: string | number;
+  latitude: number;
+  longitude: number;
+  tipo?: 'drone' | OcorrenciaTipo;
+}
+
+type OcorrenciaTipo = 'Incêndio' | 'Enchente' | 'Ventania';
 
 const DroneMapScreen = () => {
-  const [currentLocations, setCurrentLocations] = useState(droneLocations);
-  const [mapMode, setMapMode] = useState(1);
-  const [isDarkMode, setIsDarkMode] = useState(true);
-
-  const toggleMapData = () => {
-    setCurrentLocations(mapMode === 1 ? droneLocations2 : droneLocations);
-    setMapMode((prev) => (prev === 1 ? 2 : 1));
-  };
+  const [markers, setMarkers] = useState<DroneLocation[]>(
+    droneLocations.map(d => ({ ...d, tipo: 'drone' }))
+  );
+  const user = useAuth();
+  
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
+  
+  const [isOcorrenciaModalVisible, setOcorrenciaModalVisible] = useState(false);
+  const [isDetalhesModalVisible, setDetalhesModalVisible] = useState(false);
+  const [selectedOcorrencia, setSelectedOcorrencia] = useState<OcorrenciaTipo | undefined>(undefined);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toggleDarkMode = () => {
     setIsDarkMode((prev) => !prev);
+  };
+  
+  const handleSelectOcorrencia = (tipo: OcorrenciaTipo) => {
+    setOcorrenciaModalVisible(false);
+    setSelectedOcorrencia(tipo);
+    setDetalhesModalVisible(true);
+  };
+
+  // 2. FUNÇÃO ATUALIZADA PARA USAR AXIOS
+  const handleConfirmarOcorrencia = async (descricao: string) => {
+    setIsSubmitting(true);
+
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permissão negada', 'Não é possível registrar a ocorrência sem acesso à sua localização.');
+      setIsSubmitting(false);
+      setDetalhesModalVisible(false);
+      return;
+    }
+
+    try {
+      const location = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
+      const reverseGeocode = await Location.reverseGeocodeAsync({ latitude, longitude });
+      const enderecoInfo = reverseGeocode[0] || {};
+
+      const payload = {
+        tipoOcorrencia: selectedOcorrencia === 'Enchente' ? 'Enchente em área urbana' : selectedOcorrencia,
+        nivelSeveridade: 10,
+        dataOcorrencia: new Date().toISOString(),
+        descricao: descricao,
+        idUsuario: user.user?.id || "Usuário não autenticado",
+        endereco: {
+          bairro: enderecoInfo.district || "A ser definido",
+          cidade: enderecoInfo.city || enderecoInfo.subregion || "A ser definida",
+          estado: enderecoInfo.region || "SP",
+          pais: enderecoInfo.country || "Brasil"
+        }
+      };
+
+      const response = await axios.post('http://10.0.2.2:8080/ocorrencias', payload);
+
+      if (response.status === 200 || response.status === 201) {
+        const newMarker: DroneLocation = {
+          id: `ocorrencia_${new Date().getTime()}`,
+          latitude,
+          longitude,
+          tipo: selectedOcorrencia,
+        };
+        setMarkers(prevMarkers => [...prevMarkers, newMarker]);
+        Alert.alert('Sucesso!', 'Sua ocorrência foi registrada.');
+      }
+    } catch (error) {
+      console.error('Erro ao registrar ocorrência:', error);
+      Alert.alert('Erro', 'Não foi possível registrar a ocorrência.');
+    } finally {
+      setIsSubmitting(false);
+      setDetalhesModalVisible(false);
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>ARYA - Drone Map</Text>
 
-      <TouchableOpacity style={styles.darkModeButton} onPress={toggleDarkMode}>
-        <Ionicons name={isDarkMode ? "sunny" : "moon"} size={32} color="#fff" />
-      </TouchableOpacity>
+      <View style={styles.rightButtonsContainer}>
+        <TouchableOpacity style={styles.iconButton} onPress={toggleDarkMode}>
+          <Ionicons name={isDarkMode ? "sunny" : "moon"} size={28} color="#fff" />
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.iconButton} onPress={() => setOcorrenciaModalVisible(true)}>
+          <AntDesign name="plus" size={28} color="#fff" />
+        </TouchableOpacity>
+      </View>
 
       <MapView
         style={styles.map}
@@ -39,20 +126,19 @@ const DroneMapScreen = () => {
         showsPointsOfInterest={false}
         showsBuildings={false}
       >
-        {currentLocations.map((drone) => (
+        {markers.map((item) => (
           <Marker
-            key={drone.id}
-            coordinate={{
-              latitude: drone.latitude,
-              longitude: drone.longitude,
-            }}
-            title={`Drone: ${drone.id}`}
+            key={item.id}
+            coordinate={{ latitude: item.latitude, longitude: item.longitude }}
+            title={item.tipo === 'drone' ? `Drone: ${item.id}` : `Ocorrência: ${item.tipo}`}
           >
             <Image
               source={
-                isDarkMode
-                  ? require("../../assets/3.png")
-                  : require("../../assets/1.png")
+                item.tipo === 'drone'
+                  ? isDarkMode
+                    ? require("../../assets/3.png")
+                    : require("../../assets/1.png")
+                  : require("../../assets/ocorrencia-icon.png")
               }
               style={styles.markerIcon}
               resizeMode="contain"
@@ -61,21 +147,31 @@ const DroneMapScreen = () => {
         ))}
       </MapView>
 
-
       <View style={styles.footer}>
         <View style={styles.legend}>
-          <Text style={styles.legendItem}>
-            Acompanhe nossos drones em tempo real:
-          </Text>
+          <Text style={styles.legendTitle}>Acompanhe nossos drones:</Text>
           <Text style={styles.legendItem}>⬤ alimentos</Text>
           <Text style={styles.legendItem}>⬤ remédios</Text>
           <Text style={styles.legendItem}>⬤ suprimentos</Text>
         </View>
-
-        <TouchableOpacity onPress={toggleMapData} style={darkMapStyle ? styles.toggleButtonDark : styles.toggleButton}>
-          <Image source={darkMapStyle ? require("../../assets/3.png") : require("../../assets/1.png")} style={{ width: 40, height: 40 }} />
-        </TouchableOpacity>
       </View>
+      
+      {isOcorrenciaModalVisible && (
+        <OcorrenciaModal
+          onClose={() => setOcorrenciaModalVisible(false)}
+          onSelectOcorrencia={handleSelectOcorrencia}
+        />
+      )}
+      
+      {isDetalhesModalVisible && (
+        <DetalhesOcorrenciaModal
+          visible={isDetalhesModalVisible}
+          tipoOcorrencia={selectedOcorrencia ?? ""}
+          isSubmitting={isSubmitting}
+          onClose={() => setDetalhesModalVisible(false)}
+          onSubmit={handleConfirmarOcorrencia}
+        />
+      )}
     </View>
   );
 };
@@ -83,69 +179,58 @@ const DroneMapScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: "#111",
   },
   header: {
     color: "#fff",
     fontSize: 22,
-    fontWeight: "600",
+    fontWeight: "bold",
     textAlign: "center",
-    marginVertical: 12,
-    paddingTop: 40,
+    paddingTop: 50,
+    paddingBottom: 15,
+    backgroundColor: '#1c1c1c',
   },
   map: {
     flex: 1,
   },
   markerIcon: {
-    width: 30,
-    height: 40,
+    width: 35,
+    height: 35,
   },
-  darkModeButton: {
-    position: "absolute",
+  rightButtonsContainer: {
+    position: 'absolute',
     top: 120,
-    right: 20,
+    right: 15,
     zIndex: 10,
-    backgroundColor: "#222",
-    borderRadius: 20,
-    padding: 6,
+    gap: 15,
+  },
+  iconButton: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    borderRadius: 30,
+    padding: 12,
     elevation: 5,
   },
   footer: {
     position: "absolute",
-    bottom: 30,
+    bottom: 40,
     left: 20,
     right: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
   },
   legend: {
-    width: "80%",
-    opacity: 0.8,
-    backgroundColor: "#636363",
-    paddingHorizontal: 30,
-    paddingVertical: 20,
-    borderRadius: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    padding: 15,
+    borderRadius: 15,
   },
-  legendItem: {
+  legendTitle: {
     color: "#fff",
     fontSize: 16,
-    marginBottom: 4,
     fontWeight: "bold",
+    marginBottom: 8,
   },
-  toggleButton: {
-    backgroundColor: "#fff",
-    padding: 10,
-    borderRadius: 30,
-    marginLeft: 10,
-    elevation: 4,
-  },
-  toggleButtonDark: {
-    backgroundColor: "#000",
-    padding: 10,
-    borderRadius: 30,
-    marginLeft: 10,
-    elevation: 4,
+  legendItem: {
+    color: "#ccc",
+    fontSize: 14,
+    marginBottom: 4,
   },
 });
 
