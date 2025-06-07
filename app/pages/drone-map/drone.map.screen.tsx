@@ -1,21 +1,18 @@
-// src/screens/DroneMapScreen.tsx
-
-import React, { use, useState } from "react";
+import { useState } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity, Alert } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import * as Location from 'expo-location';
-import axios from 'axios'; // <-- 1. Importe o Axios
+import axios from 'axios';
 
-// Seus outros imports
 import { minimalMapStyle, darkMapStyle } from "./config.map";
 import { droneLocations } from "./lista.drones";
 import OcorrenciaModal from "../../components/common/modal/ocorrencia.modal";
-import DetalhesOcorrenciaModal from "../../components/common/modal/details.ocorrencia.modal";
+import DetalhesOcorrenciaModal from "../../components/common/ocorrencias/details.ocorrencia.modal";
 import { useAuth } from "../../components/context/auth.context";
 import { URL_ARYA_LOCAL_API } from "../../../constants";
+import { OcorrenciaInterface } from "../../model/ocorrencia.interface";
 
-// Interfaces e Tipos
 interface DroneLocation {
   id: string | number;
   latitude: number;
@@ -26,13 +23,13 @@ interface DroneLocation {
 type OcorrenciaTipo = 'Incêndio' | 'Enchente' | 'Ventania';
 
 const DroneMapScreen = () => {
-  const [markers, setMarkers] = useState<DroneLocation[]>(
+  const [drones, setDrones] = useState<DroneLocation[]>(
     droneLocations.map(d => ({ ...d, tipo: 'drone' }))
   );
+
   const user = useAuth();
   
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
-  
   const [isOcorrenciaModalVisible, setOcorrenciaModalVisible] = useState(false);
   const [isDetalhesModalVisible, setDetalhesModalVisible] = useState(false);
   const [selectedOcorrencia, setSelectedOcorrencia] = useState<OcorrenciaTipo | undefined>(undefined);
@@ -67,7 +64,7 @@ const DroneMapScreen = () => {
       const enderecoInfo = reverseGeocode[0] || {};
 
       const payload = {
-        tipoOcorrencia: selectedOcorrencia === 'Enchente' ? 'Enchente em área urbana' : selectedOcorrencia,
+        tipo: selectedOcorrencia === 'Enchente' ? 'Enchente em área urbana' : selectedOcorrencia,
         nivelSeveridade: 10,
         dataOcorrencia: new Date().toISOString(),
         descricao: descricao,
@@ -89,7 +86,7 @@ const DroneMapScreen = () => {
           longitude,
           tipo: selectedOcorrencia,
         };
-        setMarkers(prevMarkers => [...prevMarkers, newMarker]);
+        setDrones(prevMarkers => [...prevMarkers, newMarker]);
         Alert.alert('Sucesso!', 'Sua ocorrência foi registrada.');
       }
     } catch (error) {
@@ -127,7 +124,7 @@ const DroneMapScreen = () => {
         showsPointsOfInterest={false}
         showsBuildings={false}
       >
-        {markers.map((item) => (
+        {drones.map((item) => (
           <Marker
             key={item.id}
             coordinate={{ latitude: item.latitude, longitude: item.longitude }}
@@ -139,6 +136,8 @@ const DroneMapScreen = () => {
                   ? isDarkMode
                     ? require("../../assets/3.png")
                     : require("../../assets/1.png")
+                  : isDarkMode
+                  ? require("../../assets/ocorrencia-icon-branco.png")
                   : require("../../assets/ocorrencia-icon.png")
               }
               style={styles.markerIcon}
