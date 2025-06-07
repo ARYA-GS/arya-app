@@ -11,6 +11,9 @@ import OperacoesScreen from "../pages/operacoes/operacoes.screen";
 import HomeScreen from "../pages/home/home";
 import HubsDetailsScreen from "../pages/hubs/hubs.details.screens";
 import { Hub } from "../model/hub.interface";
+import ListarOcorrenciasScreen from "../pages/ocorrencias/listar.ocorrencias.screen";
+import OcorrenciasDetailsScreen from "../pages/ocorrencias/ocorrencias.detail";
+import { OcorrenciaInterface } from "../model/ocorrencia.interface";
 
 export type RootStackParamList = {
   TabNavigation: { screen: string } | undefined;
@@ -24,6 +27,8 @@ export type RootStackParamList = {
   MyDonationsScreen: undefined;
   OperacoesScreen: undefined;
   HubsDetailsScreen: { hub: Hub };
+  ListarOcorrenciasScreen: undefined;
+  OcorrenciasDetailsScreen: { ocorrencia: OcorrenciaInterface}; 
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -45,6 +50,8 @@ export function RootStackNavigation() {
       <Stack.Screen name="MyDonationsScreen" component={MyDonationsScreen} />
       <Stack.Screen name="OperacoesScreen" component={OperacoesScreen} />
       <Stack.Screen name="HubsDetailsScreen" component={HubsDetailsScreen} />
+      <Stack.Screen name="ListarOcorrenciasScreen" component={ListarOcorrenciasScreen} />
+      <Stack.Screen name="OcorrenciasDetailsScreen" component={OcorrenciasDetailsScreen} />
     </Stack.Navigator>
   );
 }
