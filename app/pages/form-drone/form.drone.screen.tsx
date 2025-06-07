@@ -50,15 +50,11 @@ export default function DroneDonationScreen() {
         funcoes: data.funcoes,
       };
 
-      const response = await fetch(`${URL_ARYA_LOCAL_API}/drones`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const response = await axios.post(`${URL_ARYA_LOCAL_API}/drones`, payload);
 
-      if (!response.ok) throw new Error("Erro ao cadastrar drone");
-      const result = await response.json();
-      console.log("Drone cadastrado com sucesso:", result);
+      if (response.status < 200 || response.status >= 300) throw new Error("Erro ao cadastrar drone");
+      
+      console.log("Drone cadastrado com sucesso:", response.data);
       reset();
     } catch (error) {
       console.error("Erro ao cadastrar drone:", error);
