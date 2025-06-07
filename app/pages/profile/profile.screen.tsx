@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#121212",
     padding: 20,
     flexGrow: 1,
-    paddingTop: 50,
+    paddingTop: 70,
   },
   appName: {
     fontSize: 18,

@@ -2,11 +2,12 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { RootStackParamList } from "../../routes/root.stack.navigation";
 import { useAuth } from "../../components/context/auth.context";
-import { useState } from "react";
 import BackArrow from "../../components/common/back.arrow.component";
 import InputArea from "../../components/common/text/input.area";
 import ButtonStandard from "../../components/common/button/button.standard";
 import SuccessModal from "../../components/common/modal/succes.cadastro";
+import { Controller, useForm } from "react-hook-form";
+import { useState } from "react";
 
 type CadastroScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -17,18 +18,34 @@ interface Props {
   navigation: CadastroScreenNavigationProp;
 }
 
+type FormValues = {
+  name: string;
+  birthDate: string;
+  email: string;
+  password: string;
+};
+
 const CadastroScreen = ({ navigation }: Props) => {
-  const { register } = useAuth();
-  const [name, setName] = useState("");
-  const [birthDate, setBirthDate] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { register: registerUser } = useAuth();
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleRegister = async () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      name: "",
+      birthDate: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (data: FormValues) => {
     try {
-      const formattedBirthDate = birthDate.split("/").reverse().join("-");
-      await register(name, email, formattedBirthDate, password);
+      const formattedBirthDate = data.birthDate.split("/").reverse().join("-");
+      await registerUser(data.name, data.email, formattedBirthDate, data.password);
       setModalVisible(true);
     } catch (error) {
       console.error("Erro ao cadastrar:", error);
@@ -49,37 +66,75 @@ const CadastroScreen = ({ navigation }: Props) => {
       <BackArrow color="#fff" />
       <View style={styles.topContainer}>
         <Text style={styles.title}>Cadastro</Text>
-        <InputArea
-          placeholder="Nome"
-          value={name}
-          onChangeText={setName}
-          borderRadius={5}
+
+        <Controller
+          control={control}
+          name="name"
+          rules={{ required: "Nome é obrigatório" }}
+          render={({ field: { onChange, value } }) => (
+            <InputArea
+              placeholder="Nome"
+              value={value}
+              onChangeText={onChange}
+              borderRadius={5}
+            />
+          )}
         />
-        <InputArea
-          placeholder="ex: 13/05/2025"
-          value={birthDate}
-          onChangeText={setBirthDate}
-          borderRadius={5}
+
+        <Controller
+          control={control}
+          name="birthDate"
+          rules={{ required: "Data de nascimento é obrigatória" }}
+          render={({ field: { onChange, value } }) => (
+            <InputArea
+              placeholder="ex: 13/05/2025"
+              value={value}
+              onChangeText={onChange}
+              borderRadius={5}
+            />
+          )}
         />
-        <InputArea
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          borderRadius={5}
+
+        <Controller
+          control={control}
+          name="email"
+          rules={{
+            required: "Email é obrigatório",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "Email inválido",
+            },
+          }}
+          render={({ field: { onChange, value } }) => (
+            <InputArea
+              placeholder="Email"
+              value={value}
+              onChangeText={onChange}
+              borderRadius={5}
+            />
+          )}
         />
-        <InputArea
-          placeholder="Senha"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-          borderRadius={5}
+
+        <Controller
+          control={control}
+          name="password"
+          rules={{ required: "Senha é obrigatória", minLength: { value: 6, message: "Mínimo 6 caracteres" } }}
+          render={({ field: { onChange, value } }) => (
+            <InputArea
+              placeholder="Senha"
+              secureTextEntry
+              value={value}
+              onChangeText={onChange}
+              borderRadius={5}
+            />
+          )}
         />
       </View>
 
       <View style={styles.bottomContainer}>
         <ButtonStandard
           text="Cadastrar"
-          onPress={handleRegister}
+          onPress={handleSubmit(onSubmit)}
           borderRadius={5}
         />
 
@@ -102,11 +157,12 @@ const CadastroScreen = ({ navigation }: Props) => {
         </View>
       </View>
 
+      {/* Modal de sucesso */}
       <SuccessModal
         visible={modalVisible}
         onClose={closeModal}
-        name={name}
-        email={email}
+        name={control._formValues.name}
+        email={control._formValues.email}
         onRedirect={redirectToLogin}
       />
     </View>
@@ -153,7 +209,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 130,
     position: "absolute",
-    bottom: 65
+    bottom: 65,
   },
   imageAryaContainer: {
     alignItems: "center",

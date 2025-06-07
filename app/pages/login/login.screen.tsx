@@ -7,6 +7,7 @@ import ErrorLoginModal from "../../components/common/modal/error.login.modal";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../routes/root.stack.navigation";
 import BackArrow from "../../components/common/back.arrow.component";
+import { useForm, Controller } from "react-hook-form";
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -14,16 +15,21 @@ interface Props {
   navigation: LoginScreenNavigationProp;
 }
 
+interface LoginFormData {
+  email: string;
+  password: string;
+}
+
 const LoginScreen = ({ navigation }: Props) => {
   const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleLogin = async () => {
+  const { control, handleSubmit } = useForm<LoginFormData>();
+
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      await login(email, password);
+      await login(data.email, data.password);
       console.log("Login bem-sucedido!");
     } catch (error) {
       setErrorMessage("Verifique suas credenciais e tente novamente.");
@@ -40,37 +46,53 @@ const LoginScreen = ({ navigation }: Props) => {
       <View style={styles.topContainer}>
         <BackArrow color="#fff" />
         <Text style={styles.title}>Login</Text>
-        <InputArea
-          placeholder="CPF ou E-mail"
-          value={email}
-          onChangeText={setEmail}
-          borderRadius={5}
+
+        <Controller
+          control={control}
+          name="email"
+          defaultValue=""
+          render={({ field: { onChange, value } }) => (
+            <InputArea
+              placeholder="CPF ou E-mail"
+              value={value}
+              onChangeText={onChange}
+              borderRadius={5}
+            />
+          )}
         />
-        <InputArea
-          placeholder="Senha"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-          borderRadius={5}
+
+        <Controller
+          control={control}
+          name="password"
+          defaultValue=""
+          render={({ field: { onChange, value } }) => (
+            <InputArea
+              placeholder="Senha"
+              secureTextEntry
+              value={value}
+              onChangeText={onChange}
+              borderRadius={5}
+            />
+          )}
         />
       </View>
 
       <View style={styles.bottomContainer}>
-        <ButtonStandard text="Entrar" onPress={handleLogin} borderRadius={5}/>
+        <ButtonStandard text="Entrar" onPress={handleSubmit(onSubmit)} borderRadius={5} />
         <Text style={styles.registerText}>
-          Não possui conta?{" "}
+          Não possui conta?{' '}
           <Text style={styles.linkText} onPress={() => navigation.navigate("Cadastro")}>
             Cadastre-se
           </Text>
         </Text>
 
         <View style={styles.imageAryaContainer}>
-        <Image
-          style={styles.bottomImage}
-          source={require("../../assets/arya-colorido.png")}
-          resizeMode="contain"
-        />
-      </View>
+          <Image
+            style={styles.bottomImage}
+            source={require("../../assets/arya-colorido.png")}
+            resizeMode="contain"
+          />
+        </View>
       </View>
 
       <ErrorLoginModal
@@ -83,7 +105,6 @@ const LoginScreen = ({ navigation }: Props) => {
 };
 
 export default LoginScreen;
-
 
 const styles = StyleSheet.create({
   container: {
@@ -118,11 +139,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textDecorationLine: "underline",
   },
-   bottomImage: {
+  bottomImage: {
     width: "100%",
     height: 130,
     position: "absolute",
-    bottom: 65
+    bottom: 65,
   },
   imageAryaContainer: {
     alignItems: "center",
