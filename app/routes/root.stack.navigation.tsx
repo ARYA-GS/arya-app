@@ -6,7 +6,6 @@ import WelcomeScreen from "../pages/login/welcome.screen";
 import ProfileScreen from "../pages/profile/profile.screen";
 import DroneMapScreen from "../pages/drone-map/drone.map.screen";
 import FormDroneScreen from "../pages/form-drone/form.drone.screen";
-import MyDonationsScreen from "../pages/donations/my.donations.screen";
 import OperacoesScreen from "../pages/operacoes/operacoes.screen";
 import HomeScreen from "../pages/home/home";
 import HubsDetailsScreen from "../pages/hubs/hubs.details.screens";
@@ -24,7 +23,6 @@ export type RootStackParamList = {
   DroneMapScreen: undefined;
   Home: undefined;
   FormDroneScreen: undefined;
-  MyDonationsScreen: undefined;
   OperacoesScreen: undefined;
   HubsDetailsScreen: { hub: Hub };
   ListarOcorrenciasScreen: undefined;
@@ -47,7 +45,6 @@ export function RootStackNavigation() {
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="DroneMapScreen" component={DroneMapScreen} />
       <Stack.Screen name="FormDroneScreen" component={FormDroneScreen} />
-      <Stack.Screen name="MyDonationsScreen" component={MyDonationsScreen} />
       <Stack.Screen name="OperacoesScreen" component={OperacoesScreen} />
       <Stack.Screen name="HubsDetailsScreen" component={HubsDetailsScreen} />
       <Stack.Screen name="ListarOcorrenciasScreen" component={ListarOcorrenciasScreen} />
