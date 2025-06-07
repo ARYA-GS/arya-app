@@ -20,7 +20,6 @@ interface Props {
 const CadastroScreen = ({ navigation }: Props) => {
   const { register } = useAuth();
   const [name, setName] = useState("");
-  const [cpf, setCpf] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +28,7 @@ const CadastroScreen = ({ navigation }: Props) => {
   const handleRegister = async () => {
     try {
       const formattedBirthDate = birthDate.split("/").reverse().join("-");
-      await register(name, email, cpf, formattedBirthDate, password, "Admin");
+      await register(name, email, formattedBirthDate, password);
       setModalVisible(true);
     } catch (error) {
       console.error("Erro ao cadastrar:", error);
@@ -54,12 +53,6 @@ const CadastroScreen = ({ navigation }: Props) => {
           placeholder="Nome"
           value={name}
           onChangeText={setName}
-          borderRadius={5}
-        />
-        <InputArea
-          placeholder="CPF"
-          value={cpf}
-          onChangeText={setCpf}
           borderRadius={5}
         />
         <InputArea
