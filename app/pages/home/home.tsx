@@ -14,7 +14,7 @@ import { WeatherModel } from "../../model/weather.model";
 import { Hub } from "../../model/hub.interface";
 import HubButton from "../../components/common/button/hub.button";
 import { useAuth } from "../../components/context/auth.context";
-import { TabActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import HubController from "../../components/api/hubs.controller";
 import DroneController from "../../components/api/drones.controller";
 import { DroneInterface } from "../../model/drone.interface";
